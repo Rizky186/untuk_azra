@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Untuk Azra 🌙</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#fff;
+ background:radial-gradient(circle at top,#3949ab,#17122e 65%);
+ display:flex;align-items:center;justify-content:center;overflow:hidden
+}
+.card{
+ width:min(92vw,440px);min-height:620px;padding:25px 20px;border-radius:30px;
+ background:rgba(255,255,255,.12);backdrop-filter:blur(14px);
+ box-shadow:0 20px 70px #0008;text-align:center;position:relative
+}
+.stars{position:absolute;inset:0;pointer-events:none;opacity:.7}
+h1{font-size:32px;margin:35px 0 10px}
+.sub{opacity:.85}
+button{
+ border:0;border-radius:999px;padding:14px 28px;font-size:17px;font-weight:bold;
+ background:#fff;color:#29205f;cursor:pointer;box-shadow:0 8px 25px #0004
+}
+#intro,#game{display:none}
+.message{
+ margin:18px 0;padding:18px;border-radius:20px;background:rgba(0,0,0,.18);
+ text-align:left;line-height:1.65;font-size:16px
+}
+.moon{font-size:62px}
+#arena{
+ height:300px;border-radius:22px;background:rgba(0,0,0,.2);
+ position:relative;overflow:hidden;margin:15px 0
+}
+.item{position:absolute;font-size:34px;cursor:pointer;user-select:none;
+ animation:bob .7s infinite alternate}
+@keyframes bob{to{transform:scale(1.15) rotate(8deg)}}
+.score{font-size:19px;font-weight:bold}
+#result{min-height:30px;font-weight:bold}
+.small{font-size:13px;opacity:.7}
+</style>
+</head>
+<body>
+<div class="card">
+ <div class="stars">✦　·　✧　　·　✦　　✧　·　✦</div>
+
+ <section id="home">
+   <div class="moon">🌙</div>
+   <h1>Selamat Dateng Azra </h1>
+   <p class="sub">Ada sesuatu kecil buat kamu...</p>
+   <button onclick="mulai()">▶️ Klik Mulai</button>
+ </section>
+
+ <section id="intro">
+   <div class="moon">🌙</div>
+   <h1>Selamat Dateng Azra </h1>
+   <div class="message">
+    tidur azraa besok sekolah jangan bergadang kamu kecapean tadi jugaa,
+    kalo kamu mau tau kenapaa aku kagak mau di panggil kak<br><br>
+    yaa aku kagak mau di panggil kak sama kamu 😭 ada alasan lain nyaa
+    tapi aku kagak bisa ngomong sekarang hehehe,,<br><br>
+    udah dehh tidur gihh ,besok jangan lupaaa makan yaa 
+   </div>
+   <button onclick="keGame()">🎮 Main Game</button>
+ </section>
+
+ <section id="game">
+   <h1>🌟 Tangkap Bintang!</h1>
+   <p class="sub">Tangkap 12 bintang sebelum waktunya habis!</p>
+   <div class="score">⭐ <span id="score">0</span>/12 &nbsp; ⏱️ <span id="time">20</span></div>
+   <div id="arena"></div>
+   <div id="result"></div>
+   <button onclick="startGame()">🔄 Main Lagi</button>
+   <p class="small">Kalau sudah menang... waktunya tidur 😴</p>
+ </section>
+</div>
+
+<script>
+let score=0,time=20,playing=false,clock,move;
+
+function mulai(){
+ document.getElementById('home').style.display='none';
+ document.getElementById('intro').style.display='block';
+}
+function keGame(){
+ document.getElementById('intro').style.display='none';
+ document.getElementById('game').style.display='block';
+ startGame();
+}
+function spawn(){
+ const arena=document.getElementById('arena');
+ const x=document.createElement('div');
+ x.className='item';
+ x.textContent=['⭐','🌟','✨','⭐'][Math.floor(Math.random()*4)];
+ x.style.left=(Math.random()*82+4)+'%';
+ x.style.top=(Math.random()*78+3)+'%';
+ x.onclick=()=>{
+   if(!playing)return;
+   score++;document.getElementById('score').textContent=score;
+   x.remove();
+   if(score>=12) win(); else spawn();
+ };
+ arena.appendChild(x);
+}
+function startGame(){
+ clearInterval(clock);clearTimeout(move);
+ score=0;time=20;playing=true;
+ document.getElementById('score').textContent=0;
+ document.getElementById('time').textContent=time;
+ document.getElementById('result').textContent='';
+ document.getElementById('arena').innerHTML='';
+ for(let i=0;i<3;i++)spawn();
+ clock=setInterval(()=>{
+   time--;document.getElementById('time').textContent=time;
+   if(time<=0)lose();
+ },1000);
+}
+function win(){
+ playing=false;clearInterval(clock);
+ document.getElementById('arena').innerHTML='';
+ document.getElementById('result').textContent='🎉 MENANG! Hebat Azra! Sekarang tidur yaa 😴';
+}
+function lose(){
+ playing=false;clearInterval(clock);
+ document.getElementById('arena').innerHTML='';
+ document.getElementById('result').textContent='😂 Waktunya habis! Coba lagi, Azra!';
+}
+</script>
+</body>
+</html>
